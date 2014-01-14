@@ -1,0 +1,60 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div class="pagination"><%= will_paginate models %></div>
+    <table class="table table-striped">
+		<tr>
+			<th><%= t('#') %></th>
+			<th><%= t('Warehouse') %></th>
+			<th><%= t('In Date') %></th>
+			<th><%= t('Item Name') %></th>
+			<th><%= t('Item Category') %></th>
+			<th><%= t('Spec') %></th>
+			<th><%= t('In Qty') %></th>				
+			<th><%= t('Stock Qty') %></th>
+			<th><%= t('Inspection') %></th>
+			<th><%= t('Storage Location') %></th>			
+			<th><%= t('Supplier') %></th>
+			<th><%= t('Received By') %></th>
+			<th><%= t('Last Updated By') %></th>
+			<th></th>
+			<th></th>
+			
+		</tr>
+		<% models.each do |r| %>
+		  <tr>
+		  	<% unless has_action_right?('show', params[:controller], r) %>
+		  	  <td><%= prt(r, :id) %></td>
+		  	<% else %>
+		  	  <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{item_path(r)}" %></td>
+		  	<% end %>
+		  	<td><%= prt(r, 'warehouse.name') %></td>
+		  	<td><%= r.in_date.strftime("%Y/%m/%d") %></td>
+		  	<td><%= prt(r, :name) %></td>
+		  	<td><%= prt(r, 'item_category.name') %></td>
+		  	<td><%= prt(r, :spec) %></td>
+		  	<td><%= prt(r, :in_qty) %></td>
+			<td><%= prt(r, :stock_qty) %></td>
+			<td><%= prt(r, :inspection) %></td>
+			<td><%= prt(r, :storage_location) %></td> 
+			<td><%= prt(r,'supplier.name') %></td>
+			<td><%= prt(r, 'received_by.name') %></td>
+			<td><%= prt(r, 'last_updated_by.name') %></td>    
+			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+			<td><%= link_to t('Item Checkout'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(PettyWarehousex.index_checkout_path))}", :class => BUTTONS_CLS['action']  if r.stock_qty > 0 && has_action_right?('index', PettyWarehousex.checkout_resource.to_s, r) %></td>
+		  </tr>
+		<% end %>
+	</table>
+	
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+	    	<%= link_to t('New Item'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI::escape new_item_path() }", :class => BUTTONS_CLS['action']  if has_action_right?('create', params[:controller]) %>
+	    </th>
+	  </tr>
+	</table>
+
+<% end %>	

@@ -1,0 +1,24 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<%= simple_form_for @item do |f| %>    
+
+  <%= f.input :name, :label => t("Item Name") %>
+  <%= f.input :warehouse_id, :label => t("Warehouse"), :collection => @warehouse, :include_blank => true %>
+  <%= f.input :item_category_id, :label => t("Item Category"), :collection => @item_category, :include_blank => true %>
+  <%= f.input :spec, :label => t("Spec") %>
+  <%= f.input :in_date, :label => t("In Date"), :as => :string %> 
+  <%= f.input :in_qty, :label => t("In Qty") %>
+  <%= f.input :unit, :label => t("Unit"), :collection => @qty_unit, :include_blank => true %>  
+  <%= f.input :unit_price, :label => t("Unit Price($)") %> 
+  <%= f.input :storage_location, :label => t("Storage Location") %> 
+  <%= f.input :inspection, :label => t("Inspection"), :input_html => {:rows => 4} %> 
+  <%= f.input :supplier_id, :label => t('Supplier'), :collection => PettyWarehousex.supplier_class.where(:active => true), :include_blank => true %>
+  
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save') %>  
+<% end %>
+
+<% end %>

@@ -1,0 +1,28 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<%= simple_form_for @item do |f| %>    
+
+  <%= f.input :name, :label => t("Item Name"), :readonly => readonly?(@item, 'name')%>
+  <%= f.input :warehouse_id, :label => t("Warehouse"), :collection => @warehouse unless readonly?(@item, 'warehouse_id') %>
+  <%= f.input :warehouse_name, :label => t("Warehouse"), :readonly => true, :input_html => {:value => @item.warehouse.name } if readonly?(@item, 'warehouse_id') %>
+  <%= f.input :item_category_id, :label => t("Item Category"), :collection => @item_category unless readonly?(@item, 'item_category_id') %>
+  <%= f.input :item_category_name, :label => t("Item Category"), :readonly => true, :input_html => {:value => @item.item_category.name} if readonly?(@item, 'item_category_id') %>
+  <%= f.input :spec, :label => t("Spec"), :readonly => readonly?(@item, 'spec') %>
+  <%= f.input :in_date, :label => t("In Date"), :as => :string %> 
+  <%= f.input :in_qty, :label => t("In Qty"), :readonly => readonly?(@item, 'in_qty') %>
+  <%= f.input :unit, :label => t("Unit"), :collection => @qty_unit unless readonly?(@item, 'unit') %> 
+  <%= f.input :unit, :label => t("Unit"), :readonly => true, :input_html => {:value => @item.unit} if readonly?(@item, 'unit') %>  
+  <%= f.input :unit_price, :label => t("Unit Price($)"), :readonly => true, :input_html => {:value => @purchase_order.try(:unit_price)} %> 
+  <%= f.input :storage_location, :label => t("Storage Location"), :readonly => readonly?(@item, 'storage_location') %> 
+  <%= f.input :inspection, :label => t("Inspection"), :input_html => {:rows => 4}, :readonly => readonly?(@item, 'inspection') %> 
+  <%= f.input :supplier_name, :label => t('Supplier'), :readonly => true, :input_html => {:value => @item.supplier.name} if readonly?(@item, 'supplier_id') %>
+  <%= f.input :supplier_id, :label => t('Supplier'), :collection => PettyWarehousex.supplier_class.where(:active => true) unless readonly?(@item, 'supplier_id') %>
+  <%= f.input :received_by_name, :label => t('Received By'), :readonly => true, :input_html => {:value => @item.received_by.name} %>
+    
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save') %>  
+<% end %>
+
+<% end %>
