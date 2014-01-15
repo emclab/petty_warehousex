@@ -16,6 +16,7 @@
 			<th><%= t('Inspection') %></th>
 			<th><%= t('Storage Location') %></th>			
 			<th><%= t('Supplier') %></th>
+			<th><%= t('Total Cost($)') %></th>
 			<th><%= t('Received By') %></th>
 			<th><%= t('Last Updated By') %></th>
 			<th></th>
@@ -39,6 +40,7 @@
 			<td><%= prt(r, :inspection) %></td>
 			<td><%= prt(r, :storage_location) %></td> 
 			<td><%= prt(r,'supplier.name') %></td>
+			<td><%= number_with_precision(r.total_cost, :precision => 2) %></td>
 			<td><%= prt(r, 'received_by.name') %></td>
 			<td><%= prt(r, 'last_updated_by.name') %></td>    
 			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>

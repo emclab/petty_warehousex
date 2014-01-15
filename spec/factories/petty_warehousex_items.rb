@@ -17,5 +17,6 @@ FactoryGirl.define do
     item_category_id 1
     other_cost "9.99"
     warehouse_id 1
+    total_cost 8.99
   end
 end

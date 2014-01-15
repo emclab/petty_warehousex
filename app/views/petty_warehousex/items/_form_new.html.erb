@@ -12,6 +12,8 @@
   <%= f.input :in_qty, :label => t("In Qty") %>
   <%= f.input :unit, :label => t("Unit"), :collection => @qty_unit, :include_blank => true %>  
   <%= f.input :unit_price, :label => t("Unit Price($)") %> 
+  <%= f.input :other_cost, :label => t("Other Cost($)") %>
+  <%= f.input :total_cost, :label => t("Total Cost($)") %>
   <%= f.input :storage_location, :label => t("Storage Location") %> 
   <%= f.input :inspection, :label => t("Inspection"), :input_html => {:rows => 4} %> 
   <%= f.input :supplier_id, :label => t('Supplier'), :collection => PettyWarehousex.supplier_class.where(:active => true), :include_blank => true %>

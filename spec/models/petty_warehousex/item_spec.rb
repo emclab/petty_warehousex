@@ -12,6 +12,11 @@ module PettyWarehousex
       c.should_not be_valid
     end
     
+    it "should reject 0 total cost" do
+      c = FactoryGirl.build(:petty_warehousex_item, :total_cost => 0)
+      c.should_not be_valid
+    end
+    
     it "should reject nil warehouse id" do
       c = FactoryGirl.build(:petty_warehousex_item, :warehouse_id => nil)
       c.should_not be_valid

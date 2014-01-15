@@ -18,6 +18,7 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
       t.decimal :other_cost, :precision => 10, :scale => 2
       t.integer :received_by_id
       t.integer :warehouse_id
+      t.decimal :total_cost, :precision => 10, :scale => 2
       
     end
     

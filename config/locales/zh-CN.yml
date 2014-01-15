@@ -44,3 +44,5 @@ zh-CN:
   Unit : '单位'
   Item Category : '库存分类'
   Warehouse : '仓库'
+  Other Cost($) : '其他费用（￥）'
+  Total Cost($) : '总费用（￥）'
