@@ -1,24 +1,37 @@
 module PettyWarehousex
   class Item < ActiveRecord::Base
-    attr_accessor :supplier_name, :received_by_name, :item_category_name, :warehouse_name
-    attr_accessible :in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :warehouse_id, :total_cost,
+    attr_accessor :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name
+    attr_accessible :in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :item_spec, :stock_qty, :storage_location, :supplier_id, 
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id,
                     :as => :role_new
-    attr_accessible :in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :warehouse_id, :total_cost,
-                    :supplier_name, :received_by_name, :item_category_name, :warehouse_name,
+    attr_accessible :in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :item_spec, :stock_qty, :storage_location, :supplier_id, 
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, 
+                    :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name,
                     :as => :role_update
+                    
+    attr_accessor   :start_date_s, :end_date_s, :name_s, :item_spec_s, :storage_location_s, :whs_string_s, :item_category_id_s, :supplier_id_s, :project_id_s
+                    
+    attr_accessible :start_date_s, :end_date_s, :name_s, :item_spec_s, :storage_location_s, :whs_string_s, :item_category_id_s, :supplier_id_s, :project_id_s,
+                    :as => :role_search_stats
                     
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
     belongs_to :received_by, :class_name => 'Authentify::User'
     belongs_to :item_category, :class_name => 'Commonx::MiscDefinition'
-    belongs_to :warehouse, :class_name => 'Commonx::MiscDefinition'
     belongs_to :supplier, :class_name => PettyWarehousex.supplier_class.to_s
+    belongs_to :project, :class_name => PettyWarehousex.project_class.to_s
 
-    validates :name, :spec, :unit, :storage_location, :in_date, :presence => true
-    validates_numericality_of :in_qty, :item_category_id, :warehouse_id, :only_integer => true, :greater_than => 0
-    validates_numericality_of :total_cost, :greater_than => 0
+    validates :name, :unit, :storage_location, :in_date, :whs_string, :presence => true
+    validates_numericality_of :in_qty, :only_integer => true, :greater_than => 0
     validates_numericality_of :stock_qty, :less_than_or_equal_to => :in_qty
     validates :stock_qty, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0}
+    validates_numericality_of :total_cost, :greater_than => 0, :if => 'total_cost.present?'
+    validates_numericality_of :unit_price, :greater_than => 0, :if => 'unit_price.present?'
+    validates_numericality_of :item_category_id, :greater_than => 0, :if => 'item_category_id.present?'
+    validate :dynamic_validate
+    
+    def dynamic_validate
+      wf = Authentify::AuthentifyUtility.find_config_const('dynamic_validate', 'petty_warehousex')
+      eval(wf) if wf.present?
+    end
   end
 end

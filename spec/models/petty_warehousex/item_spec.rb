@@ -17,11 +17,6 @@ module PettyWarehousex
       c.should_not be_valid
     end
     
-    it "should reject nil warehouse id" do
-      c = FactoryGirl.build(:petty_warehousex_item, :warehouse_id => nil)
-      c.should_not be_valid
-    end
-    
     it "should reject 0 item_category" do
       c = FactoryGirl.build(:petty_warehousex_item, :item_category_id => 0)
       c.should_not be_valid
@@ -39,11 +34,6 @@ module PettyWarehousex
     
     it "should reject nil item_name" do
       c = FactoryGirl.build(:petty_warehousex_item, :name => nil)
-      c.should_not be_valid
-    end
-    
-    it "should reject nil spec" do
-      c = FactoryGirl.build(:petty_warehousex_item, :spec => nil)
       c.should_not be_valid
     end
     

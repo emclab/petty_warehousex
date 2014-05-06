@@ -3,10 +3,13 @@ require_dependency "petty_warehousex/application_controller"
 module PettyWarehousex
   class ItemsController < ApplicationController
     before_filter :require_employee
+    before_filter :load_record
     
     def index
       @title = t('Warehouse Items')
       @items = params[:petty_warehousex_items][:model_ar_r]
+      @items = @items.where(whs_string: @whs_string) if @whs_string
+      @items = @items.where(project_id: @project_id) if @project_id
       @items = @items.page(params[:page]).per_page(@max_pagination)
       @erb_code = find_config_const('item_index_view', 'petty_warehousex')
     end
@@ -15,8 +18,7 @@ module PettyWarehousex
       @title = t('New Warehouse Item')
       @item = PettyWarehousex::Item.new()
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
-      @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
-      @warehouse = Commonx::CommonxHelper.return_misc_definitions('warehouse')
+      @item_category = Commonx::CommonxHelper.return_misc_definitions('whs_item_category')
       @erb_code = find_config_const('item_new_view', 'petty_warehousex')
     end
   
@@ -28,8 +30,9 @@ module PettyWarehousex
       if @item.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
-        @warehouse = Commonx::CommonxHelper.return_misc_definitions('warehouse')
-        @item_category = return_misc_definitions('warehouse_item')
+        @whs_string = params[:item][:whs_string]
+        @project_id = params[:item][:project_id]
+        @item_category = return_misc_definitions('whs_item_category')
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
@@ -41,7 +44,6 @@ module PettyWarehousex
       @item = PettyWarehousex::Item.find_by_id(params[:id])
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
       @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
-      @warehouse = Commonx::CommonxHelper.return_misc_definitions('warehouse')
       @erb_code = find_config_const('item_edit_view', 'petty_warehousex')
     end
   
@@ -51,8 +53,8 @@ module PettyWarehousex
       if @item.update_attributes(params[:item], :as => :role_update)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
+        @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
-        @warehouse = Commonx::CommonxHelper.return_misc_definitions('warehouse')
         flash[:notice] = t('Data Error. Not Updated!')
         render 'edit'
       end
@@ -62,6 +64,12 @@ module PettyWarehousex
       @title = t('Warehouse Item Info')
       @item = PettyWarehousex::Item.find_by_id(params[:id])
       @erb_code = find_config_const('item_show_view', 'petty_warehousex')
+    end
+    
+    protected
+    def load_record
+      @whs_string = params[:whs_string].strip if params[:whs_string].present?
+      @project_id = params[:project_id]
     end
   end
 end

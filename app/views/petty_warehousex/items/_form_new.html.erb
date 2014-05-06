@@ -5,9 +5,8 @@
 <%= simple_form_for @item do |f| %>    
 
   <%= f.input :name, :label => t("Item Name") %>
-  <%= f.input :warehouse_id, :label => t("Warehouse"), :collection => @warehouse, :include_blank => true %>
-  <%= f.input :item_category_id, :label => t("Item Category"), :collection => @item_category, :include_blank => true %>
-  <%= f.input :spec, :label => t("Spec") %>
+  <%= f.input :whs_string, :as => :hidden, :input_html => {:value => @whs_string}%>
+  <%= f.input :item_spec, :label => t("Spec") %>
   <%= f.input :in_date, :label => t("In Date"), :as => :string %> 
   <%= f.input :in_qty, :label => t("In Qty") %>
   <%= f.input :unit, :label => t("Unit"), :collection => @qty_unit, :include_blank => true %>  
@@ -20,7 +19,7 @@
   
   
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
-  <%= f.button :submit, t('Save') %>  
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %>
 
 <% end %>
