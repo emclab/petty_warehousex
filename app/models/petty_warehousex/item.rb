@@ -1,17 +1,19 @@
 module PettyWarehousex
   class Item < ActiveRecord::Base
-    attr_accessor :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name
+    attr_accessor :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name, :accepted_noupdate, :purchase_order_id_noupdate
     attr_accessible :in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :item_spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id,
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accept_date, :purchase_order_id,
                     :as => :role_new
     attr_accessible :in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :item_spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :whs_string, :total_cost, 
-                    :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name,
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :accepted, :accept_date, :purchase_order_id,
+                    :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name, :accepted_noupdate, :purchase_order_id_noupdate,
                     :as => :role_update
                     
-    attr_accessor   :start_date_s, :end_date_s, :name_s, :item_spec_s, :storage_location_s, :whs_string_s, :item_category_id_s, :supplier_id_s, :project_id_s
+    attr_accessor   :start_date_s, :end_date_s, :name_s, :item_spec_s, :storage_location_s, :whs_string_s, :item_category_id_s, :supplier_id_s, :project_id_s,
+                    :purchase_order_id_s, :accepted_s
                     
     attr_accessible :start_date_s, :end_date_s, :name_s, :item_spec_s, :storage_location_s, :whs_string_s, :item_category_id_s, :supplier_id_s, :project_id_s,
+                    :purchase_order_id_s, :accepted_s,
                     :as => :role_search_stats
                     
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
@@ -19,6 +21,7 @@ module PettyWarehousex
     belongs_to :item_category, :class_name => 'Commonx::MiscDefinition'
     belongs_to :supplier, :class_name => PettyWarehousex.supplier_class.to_s
     belongs_to :project, :class_name => PettyWarehousex.project_class.to_s
+    belongs_to :purchase_order, :class_name => PettyWarehousex.purchase_order_class.to_s
 
     validates :name, :unit, :storage_location, :in_date, :whs_string, :presence => true
     validates_numericality_of :in_qty, :only_integer => true, :greater_than => 0

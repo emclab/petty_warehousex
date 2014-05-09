@@ -20,6 +20,9 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
       t.string :whs_string   #warehouse name. used to allow access to each individual whs.
       t.decimal :total_cost, :precision => 10, :scale => 2
       t.integer :project_id
+      t.boolean :accepted, :default => false
+      t.date :accept_date
+      t.integer :purchase_order_id
       
     end
     
@@ -29,5 +32,7 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
     add_index :petty_warehousex_items, :whs_string
     add_index :petty_warehousex_items, :item_spec
     add_index :petty_warehousex_items, :project_id
+    add_index :petty_warehousex_items, :purchase_order_id
+    add_index :petty_warehousex_items, :accepted
   end
 end

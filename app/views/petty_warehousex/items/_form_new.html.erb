@@ -16,7 +16,8 @@
   <%= f.input :storage_location, :label => t("Storage Location") %> 
   <%= f.input :inspection, :label => t("Inspection"), :input_html => {:rows => 4} %> 
   <%= f.input :supplier_id, :label => t('Supplier'), :collection => PettyWarehousex.supplier_class.where(:active => true), :include_blank => true %>
-  
+  <%= f.input :project_id, :label => t('Project#') %>
+  <%= f.input :purchase_order_id, :label => t('PO#') %>
   
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  

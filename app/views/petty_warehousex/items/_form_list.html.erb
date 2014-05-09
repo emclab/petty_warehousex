@@ -5,10 +5,9 @@
 <div class="pagination"><%= will_paginate models %></div>
     <table class="table table-striped">
 		<tr>
-			<th><%= t('#') %></th>
+			<th>#</th>
 			<th><%= t('In Date') %></th>
 			<th><%= t('Item Name') %></th>
-			<th><%= t('Item Category') %></th>
 			<th><%= t('Spec') %></th>
 			<th><%= t('In Qty') %></th>				
 			<th><%= t('Stock Qty') %></th>
@@ -31,14 +30,13 @@
 		  	<% end %>
 		  	<td><%= r.in_date.strftime("%Y/%m/%d") %></td>
 		  	<td><%= prt(r, :name) %></td>
-		  	<td><%= prt(r, 'item_category.name') %></td>
 		  	<td><%= prt(r, :item_spec) %></td>
 		  	<td><%= prt(r, :in_qty) %></td>
 			<td><%= prt(r, :stock_qty) %></td>
 			<td><%= prt(r, :inspection) %></td>
 			<td><%= prt(r, :storage_location) %></td> 
 			<td><%= prt(r,'supplier.name') %></td>
-			<td><%= number_with_precision(r.total_cost, :precision => 2) %></td>
+			<td><%= number_with_precision(r.total_cost, :precision => 2) if r.total_cost.present? %></td>
 			<td><%= prt(r, 'received_by.name') %></td>
 			<td><%= prt(r, 'last_updated_by.name') %></td>    
 			<td><%= link_to t('Item Checkout'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(PettyWarehousex.index_checkout_path))}", :class => BUTTONS_CLS['action']  if r.stock_qty > 0 && has_action_right?('index', PettyWarehousex.checkout_resource.to_s, r) %></td>

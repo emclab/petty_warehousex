@@ -102,5 +102,37 @@ describe "LinkTests" do
       click_button 'Save'
       save_and_open_page
     end
+    
+    it "should create new with dynamic validate" do
+      q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id, whs_string: 'warehouse', unit: 'piece', :project_id => 1, :purchase_order_id => 2)
+      a = FactoryGirl.create(:engine_config, :engine_name => 'petty_warehousex', :engine_version => nil, :argument_name => 'dynamic_validate', 
+                             :argument_value => "errors.add(:project_id, I18n.t('Must be numeric')) if !(project_id.is_a? Numeric) or (project_id.present? && (project_id.is_a? Numeric) && project_id <=0)
+                             errors.add(:purchase_order_id, I18n.t('Must be numeric')) if !(purchase_order_id.is_a? Numeric) or (purchase_order_id.present? && (purchase_order_id.is_a? Numeric) && purchase_order_id <=0)
+                             ")
+      visit items_path(whs_string: 'warehouse')
+      #save_and_open_page
+      click_link 'New Item'
+      page.should have_content('New Warehouse Item')
+      fill_in 'item_name', :with => 'a new name'
+      fill_in 'item_storage_location', :with => 'somewhere'
+      fill_in 'item_in_qty', :with => 50
+      fill_in 'item_in_date', :with => Date.today
+      fill_in 'item_project_id', :with => 2
+      fill_in 'item_purchase_order_id', :with => 3
+      select('piece', :from => 'item_unit')
+      click_button 'Save'
+      save_and_open_page
+      #bad data
+      visit new_item_path(whs_string: 'warehouse')
+      fill_in 'item_name', :with => 'a new name'
+      fill_in 'item_storage_location', :with => 'somewhere'
+      fill_in 'item_in_qty', :with => 0
+      fill_in 'item_in_date', :with => Date.today
+      select('piece', :from => 'item_unit')
+      fill_in 'item_project_id', :with => 2
+      fill_in 'item_purchase_order_id', :with => 0
+      click_button 'Save'
+      save_and_open_page
+    end
   end
 end

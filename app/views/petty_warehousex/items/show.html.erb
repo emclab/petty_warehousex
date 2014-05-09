@@ -10,10 +10,6 @@
   <%= @item.name %>
 </p>
 <p>
-  <b><%= t('Item Category') %></b>
-  <%= @item.item_category.name %>
-</p>
-<p>
   <b><%= t('Spec') %></b>
   <%= @item.item_spec %>
 </p>
@@ -30,8 +26,16 @@
   <%= @item.stock_qty %>/<%= @item.unit %>
 </p>
 <p>
-  <b><%= t('Unit Price') %></b>
-  <%= @item.unit_price %>
+  <b><%= t('Total Cost($)') %></b>
+  <%= number_with_precision(@item.total_cost, :precision => 2) if @item.total_cost.present? %>
+</p>
+<p>
+  <b><%= t('Unit Price($)') %></b>
+  <%= number_with_precision(@item.unit_price, :precision => 2) if @item.unit_price.present? %>
+</p>
+<p>
+  <b><%= t('Other Cost($)') %></b>
+  <%= number_with_precision(@item.other_cost, :precision => 2) if @item.other_cost.present? %>
 </p>
 <p>
   <b><%= t('Storage Location') %></b>
