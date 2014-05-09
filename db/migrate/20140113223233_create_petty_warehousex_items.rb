@@ -21,7 +21,7 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
       t.decimal :total_cost, :precision => 10, :scale => 2
       t.integer :project_id
       t.boolean :accepted, :default => false
-      t.date :accept_date
+      t.date :accepted_date
       t.integer :purchase_order_id
       
     end
