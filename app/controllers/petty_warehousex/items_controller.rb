@@ -9,7 +9,7 @@ module PettyWarehousex
       @title = t('Warehouse Items')
       @items = params[:petty_warehousex_items][:model_ar_r]
       @items = @items.where(whs_string: @whs_string) if @whs_string
-      @items = @items.where(project_id: @project_id) if @project_id
+      @items = @items.where(project_id: @project.id) if @project
       @items = @items.page(params[:page]).per_page(@max_pagination)
       @erb_code = find_config_const('item_index_view', 'petty_warehousex')
     end
@@ -31,7 +31,7 @@ module PettyWarehousex
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
         @whs_string = params[:item][:whs_string]
-        @project_id = params[:item][:project_id]
+        @project = PettyWarehousex.project_class.find_by_id(params[:item][:project_id].to_i) if params[:item][:project_id].present?
         @item_category = return_misc_definitions('whs_item_category')
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         @erb_code = find_config_const('item_new_view', 'petty_warehousex')
@@ -71,7 +71,9 @@ module PettyWarehousex
     protected
     def load_record
       @whs_string = params[:whs_string].strip if params[:whs_string].present?
-      @project_id = params[:project_id]
+      @project = PettyWarehousex.project_class.find_by_id(params[:project_id].to_i) if params[:project_id].present?
+      item = PettyWarehousex::Item.find_by_id(params[:id]) if params[:id].present?
+      @project = PettyWarehousex.project_class.find_by_id(item.project_id) if params[:id].present? && item.project_id.present?  #project_id optional
     end
   end
 end

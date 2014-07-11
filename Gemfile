@@ -13,7 +13,7 @@ gem 'authentify', :path => '../authentify'  #for rspec test
 gem 'commonx', :path => '../commonx'
 gem 'supplierx', :path => '../supplierx'
 gem 'searchx', :path => '../searchx'
-gem 'heavy_machinery_projectx', :path => '../heavy_machinery_projectx'
+gem 'ext_construction_projectx', :path => '../ext_construction_projectx'
 gem 'kustomerx', :path => '../kustomerx'
 
 
