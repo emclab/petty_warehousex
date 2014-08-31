@@ -57,9 +57,11 @@ module PettyWarehousex
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id)
+        q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id, :in_qty => 10, :unit_price => nil)
         get 'create', {:use_route => :petty_warehousex, :supplier_id => @supplier.id, :item => q}
         response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        assigns(:item).in_qty.should eq(10)
+        assigns(:item).stock_qty.should eq(10)
       end
       
       it "should render new with data error" do

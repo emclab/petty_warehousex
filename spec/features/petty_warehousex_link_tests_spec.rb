@@ -87,10 +87,12 @@ describe "LinkTests" do
       page.should have_content('New Warehouse Item')
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => 'somewhere'
-      fill_in 'item_in_qty', :with => 50
+      fill_in 'item_in_qty', :with => 501
       fill_in 'item_in_date', :with => Date.today
       select('piece', :from => 'item_unit')
       click_button 'Save'
+      visit items_path(whs_string: 'warehouse')
+      page.should have_content(501)
       save_and_open_page
       #bad data
       visit new_item_path(whs_string: 'warehouse')
