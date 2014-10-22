@@ -25,7 +25,6 @@ module PettyWarehousex
 
     validates :name, :unit, :storage_location, :in_date, :whs_string, :presence => true
     validates_numericality_of :in_qty, :only_integer => true, :greater_than => 0
-    #validates_numericality_of :stock_qty, :less_than_or_equal_to => :in_qty
     validates :stock_qty, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :less_than_or_equal_to => :in_qty}
     validates_numericality_of :total_cost, :greater_than => 0, :if => 'total_cost.present?'
     validates_numericality_of :unit_price, :greater_than => 0, :if => 'unit_price.present?'
