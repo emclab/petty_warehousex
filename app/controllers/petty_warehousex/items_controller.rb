@@ -68,6 +68,11 @@ module PettyWarehousex
       @erb_code = find_config_const('item_show_view', 'petty_warehousex')
     end
     
+    def autocomplete
+      @items = PettyWarehousex::Item.where("stock_qty > ?", 0).order(:name).where("name like ?", "%#{params[:term]}%")
+      render json: @items.map(&:name)    
+    end  
+    
     protected
     def load_record
       @whs_string = params[:whs_string].strip if params[:whs_string].present?

@@ -4,8 +4,7 @@ PettyWarehousex::Engine.routes.draw do
     collection do
       get :search
       get :search_results
-      #get :stats
-      #put :stats_results 
+      get :autocomplete
     end
   end
   
