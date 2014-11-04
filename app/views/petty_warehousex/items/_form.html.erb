@@ -4,7 +4,8 @@
 <% else %>
 <%= simple_form_for @item do |f| %>    
 
-  <%= f.input :name, :label => t("Item Name"), :input_html => { data: {autocomplete_source: SUBURI + base_materialx.autocomplete_parts_path}}, :readonly => readonly?(@item, 'name')%>
+  <%= f.input :name_autocomplete, :label => t("Item Name"), :input_html => { data: {autocomplete_source: SUBURI + base_materialx.autocomplete_parts_path}}, :readonly => readonly?(@item, 'name')%>
+  <%= f.input :name, :as => :hidden %> 
   <%= f.input :field_changed, :as => :hidden %> 
   <%= f.input :item_spec, :label => t("Spec"), :readonly => true %>
   <%= f.input :in_date, :label => t("In Date"), :as => :string %> 

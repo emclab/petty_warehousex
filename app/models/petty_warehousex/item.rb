@@ -1,15 +1,15 @@
 module PettyWarehousex
   class Item < ActiveRecord::Base
     attr_accessor :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name, :accepted_noupdate, :purchase_order_id_noupdate, 
-                  :field_changed
+                  :field_changed, :name_autocomplete
     attr_accessible :in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :item_spec, :stock_qty, :storage_location, :supplier_id, 
                     :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accepted_date, :purchase_order_id,
-                    :field_changed,
+                    :field_changed, :name_autocomplete,
                     :as => :role_new
     attr_accessible :in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :item_spec, :stock_qty, :storage_location, :supplier_id, 
                     :unit, :unit_price, :inspection, :whs_string, :total_cost, :accepted, :accepted_date, :purchase_order_id,
                     :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name, :accepted_noupdate, :purchase_order_id_noupdate, 
-                    :field_changed,
+                    :field_changed, :name_autocomplete,
                     :as => :role_update
                     
     attr_accessor   :start_date_s, :end_date_s, :name_s, :item_spec_s, :storage_location_s, :whs_string_s, :item_category_id_s, :supplier_id_s, :project_id_s,

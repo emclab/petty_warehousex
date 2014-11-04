@@ -7,9 +7,20 @@ $(function() {
 });
 
 $(function() {
-  $('#item_name').change(function (){
+  $('#item_name_autocomplete').change(function (){
   	$('#item_field_changed').val('item_name');
     $.get(window.location, $('form').serialize(), null, "script");
     return false;
   });
+});
+
+$(function() {
+    return $('#item_name_autocomplete').autocomplete({
+        minLength: 1,
+        source: $('#item_name_autocomplete').data('autocomplete-source'),  //'#..' can NOT be replaced with this
+        select: function(event, ui) {
+            //alert('fired!');
+            $(this).val(ui.item.value);
+        },
+    });
 });
