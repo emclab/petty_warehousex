@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount Searchx::Engine => '/searchx'
   mount ExtConstructionProjectx::Engine => '/project'
   mount Kustomerx::Engine => '/customer'
+  mount BaseMaterialx::Engine => '/base_part'
   
   resource :session
   

@@ -15,6 +15,7 @@ gem 'supplierx', :path => '../supplierx'
 gem 'searchx', :path => '../searchx'
 gem 'ext_construction_projectx', :path => '../ext_construction_projectx'
 gem 'kustomerx', :path => '../kustomerx'
+gem 'base_materialx', :path => '../base_materialx'
 
 
 # Declare any dependencies that are still in development here instead of in

@@ -18,8 +18,10 @@ module PettyWarehousex
       @title = t('New Warehouse Item')
       @item = PettyWarehousex::Item.new()
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
+      @part_name = params[:item][:name].strip if params[:item].present? && params[:item][:name].present?
       @item_category = Commonx::CommonxHelper.return_misc_definitions('whs_item_category')
       @erb_code = find_config_const('item_new_view', 'petty_warehousex')
+      @js_erb_code = find_config_const('item_new_js_view', 'petty_warehousex')
     end
   
     def create
@@ -35,6 +37,7 @@ module PettyWarehousex
         @item_category = return_misc_definitions('whs_item_category')
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         @erb_code = find_config_const('item_new_view', 'petty_warehousex')
+        @js_erb_code = find_config_const('item_new_js_view', 'petty_warehousex')
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
       end
@@ -43,9 +46,11 @@ module PettyWarehousex
     def edit
       @title = t('Update Warehouse Item')
       @item = PettyWarehousex::Item.find_by_id(params[:id])
+      @part_name = params[:item][:name].strip if params[:item].present? && params[:item][:name].present?
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
       @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
       @erb_code = find_config_const('item_edit_view', 'petty_warehousex')
+      @js_erb_code = find_config_const('item_edit_js_view', 'petty_warehousex')       
     end
   
     def update
@@ -57,6 +62,7 @@ module PettyWarehousex
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
         @erb_code = find_config_const('item_edit_view', 'petty_warehousex')
+        @js_erb_code = find_config_const('item_edit_js_view', 'petty_warehousex')  
         flash[:notice] = t('Data Error. Not Updated!')
         render 'edit'
       end

@@ -4,12 +4,12 @@
 <% else %>
 <%= simple_form_for @item do |f| %>    
 
-  <%= f.input :name, :label => t("Item Name"), :readonly => readonly?(@item, 'name')%>
-  <%= f.input :item_spec, :label => t("Spec"), :readonly => readonly?(@item, 'spec') %>
+  <%= f.input :name, :label => t("Item Name"), :input_html => { data: {autocomplete_source: SUBURI + base_materialx.autocomplete_parts_path}}, :readonly => readonly?(@item, 'name')%>
+  <%= f.input :field_changed, :as => :hidden %> 
+  <%= f.input :item_spec, :label => t("Spec"), :readonly => true %>
   <%= f.input :in_date, :label => t("In Date"), :as => :string %> 
   <%= f.input :in_qty, :label => t("In Qty"), :readonly => readonly?(@item, 'in_qty') %>
-  <%= f.input :unit, :label => t("Unit"), :collection => @qty_unit unless readonly?(@item, 'unit') %> 
-  <%= f.input :unit, :label => t("Unit"), :readonly => true, :input_html => {:value => @item.unit} if readonly?(@item, 'unit') %>  
+  <%= f.input :unit, :label => t("Unit"), :readonly => true %> 
   <%= f.input :unit_price, :label => t("Unit Price($)"), :readonly => true, :input_html => {:value => @purchase_order.try(:unit_price)} %> 
   <%= f.input :other_cost, :label => t("Other Cost($))"), :readonly => readonly?(@item, 'other_cost') %>
   <%= f.input :total_cost, :label => t("Total Cost($)"), :readonly => readonly?(@item, 'total_cost') %>
