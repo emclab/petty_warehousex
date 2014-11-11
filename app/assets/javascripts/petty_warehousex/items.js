@@ -15,7 +15,7 @@ $(function() {
 });
 
 $(function() {
-    return $('#item_name_autocomplete').autocomplete({
+    $('#item_name_autocomplete').autocomplete({
         minLength: 1,
         source: $('#item_name_autocomplete').data('autocomplete-source'),  //'#..' can NOT be replaced with this
         select: function(event, ui) {

@@ -1,6 +1,5 @@
 <% if @view_in_config && @js_erb_code %>
-  <% @js_erb_code = ERB.new(@js_erb_code)%>
-  <%= render @js_erb_code %>
+  <%= render inline: ERB.new(@js_erb_code).result(binding) %>
   
 <% else %>
   <% if @field_changed == 'item_name' && @part_name %>

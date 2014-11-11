@@ -18,7 +18,7 @@ module PettyWarehousex
       @title = t('New Warehouse Item')
       @item = PettyWarehousex::Item.new()
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
-      @part_name = params[:item][:name].strip if params[:item].present? && params[:item][:name].present?
+      @part_name = params[:item][:name_autocomplete].strip if params[:item].present? && params[:item][:name_autocomplete].present?
       @field_changed = params[:item][:field_changed].strip if params[:item].present? && params[:item][:field_changed].present?
       @item_category = Commonx::CommonxHelper.return_misc_definitions('whs_item_category')
       @erb_code = find_config_const('item_new_view', 'petty_warehousex')
@@ -47,7 +47,7 @@ module PettyWarehousex
     def edit
       @title = t('Update Warehouse Item')
       @item = PettyWarehousex::Item.find_by_id(params[:id])
-      @part_name = params[:item][:name].strip if params[:item].present? && params[:item][:name].present?
+      @part_name = params[:item][:name_autocomplete].strip if params[:item].present? && params[:item][:name_autocomplete].present?
       @field_changed = params[:item][:field_changed].strip if params[:item].present? && params[:item][:field_changed].present?
       @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
       @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
