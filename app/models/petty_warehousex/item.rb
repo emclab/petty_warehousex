@@ -27,7 +27,7 @@ module PettyWarehousex
     belongs_to :purchase_order, :class_name => PettyWarehousex.purchase_order_class.to_s
 
     validates :name, :unit, :storage_location, :in_date, :whs_string, :presence => true
-    validates_numericality_of :in_qty, :only_integer => true, :greater_than => 0
+    validates_numericality_of :in_qty, :only_integer => true, :greater_than_or_equal_to => 0
     validates :stock_qty, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :less_than_or_equal_to => :in_qty}
     validates_numericality_of :project_id, :greater_than => 0, :if => 'project_id.present?'
     validates_numericality_of :purchase_order_id, :greater_than => 0, :if => 'purchase_order_id.present?'
