@@ -1,11 +1,11 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module PettyWarehousex
-  describe ItemsController do
-  
+  RSpec.describe ItemsController, type: :controller do
+    routes {PettyWarehousex::Engine.routes}
     before(:each) do
-      controller.should_receive(:require_signin)
-      controller.should_receive(:require_employee)
+      expect(controller).to receive(:require_signin)
+      expect(controller).to receive(:require_employee)
       
     end
     
@@ -34,8 +34,8 @@ module PettyWarehousex
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
         q1 = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
-        get 'index', {:use_route => :petty_warehousex}
-        assigns(:items).should =~ [q, q1]
+        get 'index'
+        expect(assigns(:items)).to match_array([q, q1])
       end
       
     end
@@ -46,8 +46,8 @@ module PettyWarehousex
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        get 'new', {:use_route => :petty_warehousex, :supplier_id => @supplier.id}
-        response.should be_success
+        get 'new', {:supplier_id => @supplier.id}
+        expect(response).to be_success
       end
     end
   
@@ -58,10 +58,10 @@ module PettyWarehousex
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id, :in_qty => 10, :unit_price => nil)
-        get 'create', {:use_route => :petty_warehousex, :supplier_id => @supplier.id, :item => q}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
-        assigns(:item).in_qty.should eq(10)
-        assigns(:item).stock_qty.should eq(10)
+        get 'create', {:supplier_id => @supplier.id, :item => q}
+        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        expect(assigns(:item).in_qty).to eq(10)
+        expect(assigns(:item).stock_qty).to eq(10)
       end
       
       it "should render new with data error" do
@@ -70,8 +70,8 @@ module PettyWarehousex
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id, :name => nil)
-        get 'create', {:use_route => :petty_warehousex, :supplier_id => @supplier.id, :item => q}
-        response.should render_template('new')
+        get 'create', {:supplier_id => @supplier.id, :item => q}
+        expect(response).to render_template('new')
       end
     end
   
@@ -82,8 +82,8 @@ module PettyWarehousex
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
-        get 'edit', {:use_route => :petty_warehousex, :id => q.id}
-        response.should be_success
+        get 'edit', {:id => q.id}
+        expect(response).to be_success
       end
     end
   
@@ -94,8 +94,8 @@ module PettyWarehousex
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
-        get 'update', {:use_route => :petty_warehousex, :id => q.id, :item => {:in_qty => 20}}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        get 'update', {:id => q.id, :item => {:in_qty => 20}}
+        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       end
       
       it "should render edit with data error" do
@@ -104,8 +104,8 @@ module PettyWarehousex
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
-        get 'update', {:use_route => :petty_warehousex, :id => q.id, :item => {:in_qty => 0}}
-        response.should render_template('edit')
+        get 'update', {:id => q.id, :item => {:in_qty => 0}}
+        expect(response).to render_template('edit')
       end
     end
   
@@ -116,8 +116,8 @@ module PettyWarehousex
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
-        get 'show', {:use_route => :petty_warehousex, :id => q.id }
-        response.should be_success
+        get 'show', {:id => q.id }
+        expect(response).to be_success
       end
     end
   end

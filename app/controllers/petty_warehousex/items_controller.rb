@@ -2,8 +2,8 @@ require_dependency "petty_warehousex/application_controller"
 
 module PettyWarehousex
   class ItemsController < ApplicationController
-    before_filter :require_employee
-    before_filter :load_record
+    before_action :require_employee
+    before_action :load_record
     
     def index
       @title = t('Warehouse Items')

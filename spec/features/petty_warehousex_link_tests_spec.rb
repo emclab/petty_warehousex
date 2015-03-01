@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe "LinkTests" do
+RSpec.describe "LinkTests", type: :request do
   describe "GET /petty_warehousex_link_tests" do
     mini_btn = 'btn btn-mini '
     ActionView::CompiledTemplates::BUTTONS_CLS =
@@ -58,44 +58,44 @@ describe "LinkTests" do
       q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id, whs_string: 'warehouse', unit: 'piece')
       log = FactoryGirl.create(:commonx_log, :resource_id => q.id, :resource_name => 'petty_warehousex_items')
       
-      visit items_path
+      visit petty_warehousex.items_path
       save_and_open_page
-      page.should have_content('Warehouse Items')
+      expect(page).to have_content('Warehouse Items')
       click_link 'Edit'
-      page.should have_content('Edit Warehouse Item')
+      expect(page).to have_content('Edit Warehouse Item')
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => 'somewhere'
       click_button 'Save'
       save_and_open_page
       #bad data
-      visit items_path
+      visit petty_warehousex.items_path
       click_link 'Edit'
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => ''
       click_button 'Save'
       save_and_open_page
       
-      visit items_path
+      visit petty_warehousex.items_path
       click_link q.id.to_s
       #save_and_open_page
-      page.should have_content('Warehouse Item Info')
+      expect(page).to have_content('Warehouse Item Info')
       click_link 'New Log'
-      page.should have_content('Log')
+      expect(page).to have_content('Log')
       
-      visit new_item_path(whs_string: 'warehouse')
+      visit petty_warehousex.new_item_path(whs_string: 'warehouse')
       #save_and_open_page
-      page.should have_content('New Warehouse Item')
+      expect(page).to have_content('New Warehouse Item')
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => 'somewhere'
       fill_in 'item_in_qty', :with => 501
       fill_in 'item_in_date', :with => Date.today
       select('piece', :from => 'item_unit')
       click_button 'Save'
-      visit items_path(whs_string: 'warehouse')
-      page.should have_content(501)
+      visit petty_warehousex.items_path(whs_string: 'warehouse')
+      expect(page).to have_content(501)
       save_and_open_page
       #bad data
-      visit new_item_path(whs_string: 'warehouse')
+      visit petty_warehousex.new_item_path(whs_string: 'warehouse')
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => 'somewhere'
       fill_in 'item_in_qty', :with => 0
@@ -111,10 +111,10 @@ describe "LinkTests" do
                              :argument_value => "errors.add(:project_id, I18n.t('Must be numeric')) if !(project_id.is_a? Numeric) or (project_id.present? && (project_id.is_a? Numeric) && project_id <=0)
                              errors.add(:purchase_order_id, I18n.t('Must be numeric')) if !(purchase_order_id.is_a? Numeric) or (purchase_order_id.present? && (purchase_order_id.is_a? Numeric) && purchase_order_id <=0)
                              ")
-      visit items_path(whs_string: 'warehouse')
+      visit petty_warehousex.items_path(whs_string: 'warehouse')
       #save_and_open_page
       click_link 'New Item'
-      page.should have_content('New Warehouse Item')
+      expect(page).to have_content('New Warehouse Item')
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => 'somewhere'
       fill_in 'item_in_qty', :with => 50
@@ -125,7 +125,7 @@ describe "LinkTests" do
       click_button 'Save'
       save_and_open_page
       #bad data
-      visit new_item_path(whs_string: 'warehouse')
+      visit petty_warehousex.new_item_path(whs_string: 'warehouse')
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => 'somewhere'
       fill_in 'item_in_qty', :with => 0
