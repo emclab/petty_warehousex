@@ -1,3 +1,3 @@
 module PettyWarehousex
-  VERSION = "3.2.12.08"
+  VERSION = "01"
 end
