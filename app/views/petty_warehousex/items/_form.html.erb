@@ -2,6 +2,7 @@
   <%= render inline: @erb_code %>
   
 <% else %>
+<h4><%=@title %></h4>
 <%= simple_form_for @item do |f| %>    
 
   <%= f.input :name_autocomplete, :label => t("Item Name"), :input_html => { data: {autocomplete_source: SUBURI + base_materialx.autocomplete_parts_path}}, :readonly => readonly?(@item, 'name')%>
@@ -20,7 +21,7 @@
   <%= f.input :supplier_id, :label => t('Supplier'), :collection => PettyWarehousex.supplier_class.where(:active => true) unless readonly?(@item, 'supplier_id') %>
   <%= f.input :received_by_name, :label => t('Received By'), :readonly => true, :input_html => {:value => @item.received_by.name} %>
     
-  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %>
 

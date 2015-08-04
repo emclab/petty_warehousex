@@ -2,6 +2,7 @@
   <%= render inline: @erb_code %>
   
 <% else %>
+<h4><%=@title %></h4>
 <%= simple_form_for @item do |f| %>    
 
   <%= f.input :name_autocomplete, :label => t("Item Name"), :input_html => { data: {autocomplete_source: SUBURI + base_materialx.autocomplete_parts_path}},:placeholder => t("Enter Part Name Keyword"), :required => true  %>
@@ -21,7 +22,7 @@
   <%= f.input :project_id, :label => t('Project#') %>
   <%= f.input :purchase_order_id, :label => t('PO#') %>
   
-  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %>
 

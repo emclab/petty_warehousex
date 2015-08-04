@@ -26,12 +26,12 @@ module PettyWarehousex
     end
   
     def create
-      @item = PettyWarehousex::Item.new(params[:item], :as => :role_new)
+      @item = PettyWarehousex::Item.new(new_params)
       @item.last_updated_by_id = session[:user_id]
       @item.received_by_id = session[:user_id]
       @item.stock_qty = params[:item][:in_qty]
       if @item.save
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       else
         @whs_string = params[:item][:whs_string]
         @project = PettyWarehousex.project_class.find_by_id(params[:item][:project_id].to_i) if params[:item][:project_id].present?
@@ -58,8 +58,8 @@ module PettyWarehousex
     def update
       @item = PettyWarehousex::Item.find_by_id(params[:id])
       @item.last_updated_by_id = session[:user_id]
-      if @item.update_attributes(params[:item], :as => :role_update)
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+      if @item.update_attributes(edit_params)
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       else
         @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
@@ -87,6 +87,18 @@ module PettyWarehousex
       @project = PettyWarehousex.project_class.find_by_id(params[:project_id].to_i) if params[:project_id].present?
       item = PettyWarehousex::Item.find_by_id(params[:id]) if params[:id].present?
       @project = PettyWarehousex.project_class.find_by_id(item.project_id) if params[:id].present? && item.project_id.present?  #project_id optional
+    end
+    
+    private
+    
+    def new_params
+      params.require(:item).permit(:in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :item_spec, :stock_qty, :storage_location, :supplier_id, 
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accepted_date, :purchase_order_id)
+    end
+    
+    def edit_params
+      params.require(:item).permit(:in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :item_spec, :stock_qty, :storage_location, :supplier_id, 
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :accepted, :accepted_date, :purchase_order_id)
     end
   end
 end

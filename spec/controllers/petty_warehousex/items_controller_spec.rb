@@ -22,6 +22,8 @@ module PettyWarehousex
       @supplier = FactoryGirl.create(:supplierx_supplier)
       b = FactoryGirl.create(:commonx_misc_definition, :for_which => 'wh_item_category', :active => true)
       b = FactoryGirl.create(:commonx_misc_definition, :for_which => 'warehouse', :active => true)
+      
+      session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids
     end
     
     render_views
@@ -59,7 +61,7 @@ module PettyWarehousex
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id, :in_qty => 10, :unit_price => nil)
         get 'create', {:supplier_id => @supplier.id, :item => q}
-        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
         expect(assigns(:item).in_qty).to eq(10)
         expect(assigns(:item).stock_qty).to eq(10)
       end
@@ -95,7 +97,7 @@ module PettyWarehousex
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
         get 'update', {:id => q.id, :item => {:in_qty => 20}}
-        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       end
       
       it "should render edit with data error" do
