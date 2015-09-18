@@ -1,7 +1,8 @@
 require "petty_warehousex/engine"
 
 module PettyWarehousex
-  mattr_accessor :supplier_class, :index_checkout_path, :checkout_resource, :project_class, :purchase_order_class, :material_item_class, :checkout_class
+  mattr_accessor :supplier_class, :index_checkout_path, :checkout_resource, :project_class, :purchase_order_class, :material_item_class, :checkout_class,
+                 :category_class, :sub_category_class
   
   def self.supplier_class
     @@supplier_class.constantize
@@ -22,4 +23,13 @@ module PettyWarehousex
   def self.checkout_class
     @@checkout_class.constantize
   end
+  
+  def self.category_class
+    @@category_class.constantize
+  end
+
+  def self.sub_category_class
+    @@sub_category_class.constantize
+  end
+
 end

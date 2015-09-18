@@ -3,10 +3,10 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
     create_table :petty_warehousex_items do |t|
       t.string :name
       t.date :in_date
-      t.integer :in_qty
+      t.decimal :in_qty, :precision => 12, :scale => 4
       t.string :spec
       t.integer :last_updated_by_id
-      t.integer :stock_qty
+      t.integer :stock_qty, :precision => 12, :scale => 4
       t.text :note
       t.string :storage_location
       t.text :inspection
@@ -15,6 +15,7 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
       t.integer :supplier_id
       t.decimal :unit_price, :precision => 10, :scale => 2
       t.integer :item_category_id
+      t.integer :item_sub_category_id
       t.decimal :other_cost, :precision => 10, :scale => 2
       t.integer :received_by_id
       t.string :whs_string   #warehouse name. used to allow access to each individual whs.
