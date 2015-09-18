@@ -8,7 +8,7 @@
   <%= f.input :name_autocomplete, :label => t("Item Name"), :input_html => { data: {autocomplete_source: SUBURI + base_materialx.autocomplete_parts_path}}, :readonly => readonly?(@item, 'name')%>
   <%= f.input :name %> 
   <%= f.input :field_changed, :as => :hidden %> 
-  <%= f.input :item_spec, :label => t("Spec"), :readonly => true %>
+  <%= f.input :spec, :label => t("Spec"), :readonly => true %>
   <%= f.input :in_date, :label => t("In Date"), :as => :string %> 
   <%= f.input :in_qty, :label => t("In Qty"), :readonly => readonly?(@item, 'in_qty') %>
   <%= f.input :unit, :label => t("Unit"), :readonly => true %> 

@@ -4,7 +4,7 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
       t.string :name
       t.date :in_date
       t.integer :in_qty
-      t.string :item_spec
+      t.string :spec
       t.integer :last_updated_by_id
       t.integer :stock_qty
       t.text :note
@@ -23,6 +23,8 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
       t.boolean :accepted, :default => false
       t.date :accepted_date
       t.integer :purchase_order_id
+      t.string :part_num
+      t.string :aux_resource
       
     end
     
@@ -30,9 +32,11 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
     add_index :petty_warehousex_items, :item_category_id
     add_index :petty_warehousex_items, :received_by_id
     add_index :petty_warehousex_items, :whs_string
-    add_index :petty_warehousex_items, :item_spec
+    add_index :petty_warehousex_items, :spec
     add_index :petty_warehousex_items, :project_id
     add_index :petty_warehousex_items, :purchase_order_id
     add_index :petty_warehousex_items, :accepted
+    add_index :petty_warehousex_items, :part_num
+    add_index :petty_warehousex_items, :aux_resource
   end
 end

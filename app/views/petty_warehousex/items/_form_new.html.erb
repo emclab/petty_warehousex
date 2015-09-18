@@ -9,7 +9,7 @@
   <%= f.input :name %> 
   <%= f.input :field_changed, :as => :hidden %> 
   <%= f.input :whs_string, :as => :hidden, :input_html => {:value => @whs_string}%>
-  <%= f.input :item_spec, :label => t("Spec"), :readonly => true %>
+  <%= f.input :spec, :label => t("Spec"), :readonly => true %>
   <%= f.input :in_date, :label => t("In Date"), :as => :string %> 
   <%= f.input :in_qty, :label => t("In Qty") %>
   <%= f.input :unit, :label => t("Unit"), :collection => @qty_unit, :include_blank => true %>  
