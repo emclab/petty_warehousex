@@ -33,11 +33,40 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "PettyWarehousex::Item.order('created_at DESC')")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
         q1 = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
         get 'index'
         expect(assigns(:items)).to match_array([q, q1])
+      end
+      
+      it "should return with the part name" do
+        user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "PettyWarehousex::Item.order('created_at DESC')")
+        session[:user_id] = @u.id
+        q = FactoryGirl.create(:petty_warehousex_item, name: 'a bad guy', :supplier_id => @supplier.id, :received_by_id => @u.id)
+        q1 = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
+        get 'index', {part_name: 'a bad guy'}
+        expect(assigns(:items)).to match_array([q])
+      end
+
+      it "should return with the part num" do
+        user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "PettyWarehousex::Item.order('created_at DESC')")
+        session[:user_id] = @u.id
+        q = FactoryGirl.create(:petty_warehousex_item, name: 'a bad guy', :supplier_id => @supplier.id, :received_by_id => @u.id)
+        q1 = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id, part_num: '123456')
+        get 'index', {part_num: '123456'}
+        expect(assigns(:items)).to match_array([q1])
+      end
+
+      it "should return with the part spec" do
+        user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "PettyWarehousex::Item.order('created_at DESC')")
+        session[:user_id] = @u.id
+        q = FactoryGirl.create(:petty_warehousex_item, name: 'a bad guy', :supplier_id => @supplier.id, :received_by_id => @u.id, spec: '2TB')
+        q1 = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
+        get 'index', {part_spec: '2TB'}
+        expect(assigns(:items)).to match_array([q])
       end
       
     end
@@ -47,7 +76,6 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         get 'new', {:supplier_id => @supplier.id}
         expect(response).to be_success
       end
@@ -58,7 +86,6 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id, :in_qty => 10, :unit_price => nil)
         get 'create', {:supplier_id => @supplier.id, :item => q}
         expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
@@ -70,7 +97,6 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id, :name => nil)
         get 'create', {:supplier_id => @supplier.id, :item => q}
         expect(response).to render_template('new')
@@ -82,7 +108,6 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
         get 'edit', {:id => q.id}
         expect(response).to be_success
@@ -94,7 +119,6 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
         get 'update', {:id => q.id, :item => {:in_qty => 20}}
         expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
@@ -104,7 +128,6 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
         get 'update', {:id => q.id, :item => {:in_qty => 0}}
         expect(response).to render_template('edit')
@@ -116,7 +139,6 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "record.received_by_id == session[:user_id]")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
         get 'show', {:id => q.id }
         expect(response).to be_success

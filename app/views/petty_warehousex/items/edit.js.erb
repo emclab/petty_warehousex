@@ -2,8 +2,8 @@
   <%= render inline: ERB.new(@js_erb_code).result(binding) %>
   
 <% else %>
-  <% if @field_changed == 'item_name' && @part_name %>
-    <% part = PettyWarehousex.material_item_class.find_by_name(@part_name) %>
+  <% if params[:item][:field_changed] == 'item_name' && params[:item][:name_autocomplete] %>
+    <% part = PettyWarehousex.material_item_class.find_by_name(params[:item][:name_autocomplete]) %>
     <% if part.present? %>
       $('#item_name').val("<%=part.name %>");
       $('#item_unit').val("<%=part.unit %>");

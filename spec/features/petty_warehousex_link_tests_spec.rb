@@ -63,21 +63,21 @@ RSpec.describe "LinkTests", type: :request do
       log = FactoryGirl.create(:commonx_log, :resource_id => q.id, :resource_name => 'petty_warehousex_items')
       
       visit petty_warehousex.items_path
-      save_and_open_page
+      #save_and_open_page
       expect(page).to have_content('Warehouse Items')
       click_link 'Edit'
       expect(page).to have_content('Update Warehouse Item')
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => 'somewhere'
       click_button 'Save'
-      save_and_open_page
+      #save_and_open_page
       #bad data
       visit petty_warehousex.items_path
       click_link 'Edit'
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => ''
       click_button 'Save'
-      save_and_open_page
+      #save_and_open_page
       
       visit petty_warehousex.items_path
       click_link q.id.to_s
@@ -97,16 +97,17 @@ RSpec.describe "LinkTests", type: :request do
       click_button 'Save'
       visit petty_warehousex.items_path(whs_string: 'warehouse')
       expect(page).to have_content(501)
-      save_and_open_page
+      #save_and_open_page
       #bad data
       visit petty_warehousex.new_item_path(whs_string: 'warehouse')
-      fill_in 'item_name', :with => 'a new name'
+      fill_in 'item_name', :with => 'a bad new name'
       fill_in 'item_storage_location', :with => 'somewhere'
       fill_in 'item_in_qty', :with => 0
       fill_in 'item_in_date', :with => Date.today
       select('piece', :from => 'item_unit')
       click_button 'Save'
-      save_and_open_page
+      visit petty_warehousex.new_item_path(whs_string: 'warehouse')
+      expect(page).not_to have_content('a bad new name')
     end
     
     it "should create new with dynamic validate" do
@@ -119,7 +120,7 @@ RSpec.describe "LinkTests", type: :request do
       #save_and_open_page
       click_link 'New Item'
       expect(page).to have_content('New Warehouse Item')
-      fill_in 'item_name', :with => 'a new name'
+      fill_in 'item_name', :with => 'a new good name'
       fill_in 'item_storage_location', :with => 'somewhere'
       fill_in 'item_in_qty', :with => 50
       fill_in 'item_in_date', :with => Date.today
@@ -127,18 +128,24 @@ RSpec.describe "LinkTests", type: :request do
       fill_in 'item_purchase_order_id', :with => 3
       select('piece', :from => 'item_unit')
       click_button 'Save'
-      save_and_open_page
+      #check
+      visit petty_warehousex.items_path(whs_string: 'warehouse')
+      expect(page).to have_content('a new good name')
+     
+      #save_and_open_page
       #bad data
       visit petty_warehousex.new_item_path(whs_string: 'warehouse')
-      fill_in 'item_name', :with => 'a new name'
-      fill_in 'item_storage_location', :with => 'somewhere'
+      fill_in 'item_name', :with => 'a bad new name'
+      fill_in 'item_storage_location', :with => 'bad somewhere'
       fill_in 'item_in_qty', :with => 0
       fill_in 'item_in_date', :with => Date.today
       select('piece', :from => 'item_unit')
       fill_in 'item_project_id', :with => 2
       fill_in 'item_purchase_order_id', :with => 0
       click_button 'Save'
-      save_and_open_page
+      #save_and_open_page
+      visit petty_warehousex.items_path(whs_string: 'warehouse')
+      expect(page).not_to have_content('a bad new name')
     end
   end
 end

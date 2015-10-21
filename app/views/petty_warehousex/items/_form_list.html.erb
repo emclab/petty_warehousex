@@ -40,7 +40,7 @@
 			<td><%= number_with_precision(r.total_cost, :precision => 2) if r.total_cost.present? %></td>
 			<td><%= prt(r, 'received_by.name') %></td>
 			<td><%= prt(r, 'last_updated_by.name') %></td>    
-			<td><%= link_to t('Item Checkout'), SUBURI + "/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(PettyWarehousex.index_checkout_path))}", :class => BUTTONS_CLS['action']  if r.stock_qty > 0 && has_action_right?('index', PettyWarehousex.checkout_resource.to_s, r) %></td>
+			<td><%= link_to t('Item Checkout'), SUBURI + "/view_handler?index=1&url=#{CGI::escape(eval(PettyWarehousex.index_checkout_path))}", :class => BUTTONS_CLS['action']  if r.stock_qty > 0 && has_action_right?('index', 'item_checkoutx/checkouts', r) %></td>
 			<td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
 		  </tr>
 		<% end %>
