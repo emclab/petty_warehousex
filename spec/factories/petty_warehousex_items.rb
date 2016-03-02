@@ -11,7 +11,6 @@ FactoryGirl.define do
     note "MyText"
     storage_location "MyString"
     inspection "MyText"
-    unit "MyString"
     supplier_id 1
     unit_price "9.99"
     item_category_id 1

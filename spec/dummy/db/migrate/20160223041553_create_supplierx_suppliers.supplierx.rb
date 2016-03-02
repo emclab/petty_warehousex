@@ -20,10 +20,13 @@ class CreateSupplierxSuppliers < ActiveRecord::Migration
       t.integer :quality_system_id
       t.text :note
       t.text :contact_info
+      t.integer :supplier_category_id
    
     end
     
     add_index :supplierx_suppliers, :name
+    add_index :supplierx_suppliers, :short_name
+    add_index :supplierx_suppliers, :supplier_category_id
     
   end
 end

@@ -4,7 +4,7 @@ module PettyWarehousex
   RSpec.describe ItemsController, type: :controller do
     routes {PettyWarehousex::Engine.routes}
     before(:each) do
-      expect(controller).to receive(:require_signin)
+      #expect(controller).to receive(:require_signin)
       expect(controller).to receive(:require_employee)
       
     end
@@ -97,7 +97,7 @@ module PettyWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id, :name => nil)
+        q = FactoryGirl.attributes_for(:petty_warehousex_item, :supplier_id => @supplier.id, :storage_location => nil)
         get 'create', {:supplier_id => @supplier.id, :item => q}
         expect(response).to render_template('new')
       end

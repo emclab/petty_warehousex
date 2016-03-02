@@ -1,4 +1,4 @@
-<% if @view_in_config && @erb_code %>
+<% if  @erb_code %>
   <%= render inline: @erb_code %>
   
 <% else %>
@@ -12,7 +12,7 @@
   <%= f.input :spec, :label => t("Spec"), :readonly => true %>
   <%= f.input :in_date, :label => t("In Date"), :as => :string %> 
   <%= f.input :in_qty, :label => t("In Qty") %>
-  <%= f.input :unit, :label => t("Unit"), :collection => @qty_unit, :include_blank => true %>  
+  <%= f.input :unit_id, :label => t("Unit"), :collection => @qty_unit, :include_blank => true %>  
   <%= f.input :unit_price, :label => t("Unit Price($)") %> 
   <%= f.input :other_cost, :label => t("Other Cost($)") %>
   <%= f.input :total_cost, :label => t("Total Cost($)") %>

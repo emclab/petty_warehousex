@@ -81,8 +81,8 @@ module PettyWarehousex
     def load_record
       @whs_string = params[:whs_string].strip if params[:whs_string].present?
       @whs_string = session[:whs_string].strip if session[:whs_string].present?
-      @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
-      @qty_unit ||= Commonx::CommonxHelper.return_misc_definitions('piece_unit').pluck('name').join(',').split(',').map(&:strip)  
+      @qty_unit = find_config_const('piece_unit').split(',').each_with_index.map{|e, i| [e.strip, i + 1]} #'ab, cd' => [['ab', 1], ['cd', 2]]
+      @qty_unit ||= Commonx::CommonxHelper.return_misc_definitions('piece_unit')  
       @project = PettyWarehousex.project_class.find_by_id(params[:project_id].to_i) if params[:project_id].present?
       item = PettyWarehousex::Item.find_by_id(params[:id]) if params[:id].present?
       @project = PettyWarehousex.project_class.find_by_id(item.project_id) if params[:id].present? && item.project_id.present?  #project_id optional
@@ -96,12 +96,13 @@ module PettyWarehousex
     
     def new_params
       params.require(:item).permit(:in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accepted_date, :purchase_order_id, :part_num, :aux_resource)
+                    :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accepted_date, :purchase_order_id, :part_num, :aux_resource, :unit_id,
+                    :barcode, :item_id)
     end
     
     def edit_params
       params.require(:item).permit(:in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :accepted, :accepted_date, :purchase_order_id, :part_num)
+                    :unit_price, :inspection, :total_cost, :accepted, :accepted_date, :purchase_order_id, :part_num, :unit_id, :barcode, :item_id)
     end
   end
 end

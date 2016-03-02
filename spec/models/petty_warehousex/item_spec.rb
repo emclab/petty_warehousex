@@ -7,14 +7,19 @@ module PettyWarehousex
       expect(c).to be_valid
     end
     
-    it "should reject 0 qty" do
-      c = FactoryGirl.build(:petty_warehousex_item, :in_qty => 0)
+    it "should take 0 qty & stock_qty" do
+      c = FactoryGirl.build(:petty_warehousex_item, :in_qty => 0, :stock_qty => 0)
+      expect(c).to be_valid
+    end
+    
+    it "should reject 0 item_id" do
+      c = FactoryGirl.build(:petty_warehousex_item, :item_id => 0)
       expect(c).not_to be_valid
     end
     
-    it "should reject 0 total cost" do
+    it "should taek 0 total cost" do
       c = FactoryGirl.build(:petty_warehousex_item, :total_cost => 0)
-      expect(c).not_to be_valid
+      expect(c).to be_valid
     end
     
     it "should reject 0 item_category" do
@@ -22,9 +27,14 @@ module PettyWarehousex
       expect(c).not_to be_valid
     end
     
-    it "should reject nil unit" do
+    it "should take nil unit" do
       c = FactoryGirl.build(:petty_warehousex_item, :unit => nil)
-      expect(c).not_to be_valid
+      expect(c).to be_valid
+    end
+    
+    it "should take nil i_unit_id" do
+      c = FactoryGirl.build(:petty_warehousex_item, :unit_id => nil)
+      expect(c).to be_valid
     end
     
     it "should reject nil in_date" do
@@ -32,9 +42,9 @@ module PettyWarehousex
       expect(c).not_to be_valid
     end
     
-    it "should reject nil item_name" do
+    it "should take nil item_name" do
       c = FactoryGirl.build(:petty_warehousex_item, :name => nil)
-      expect(c).not_to be_valid
+      expect(c).to be_valid
     end
     
     it "should reject nil storage_location" do

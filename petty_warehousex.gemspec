@@ -7,11 +7,11 @@ require "petty_warehousex/version"
 Gem::Specification.new do |s|
   s.name        = "petty_warehousex"
   s.version     = PettyWarehousex::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of PettyWarehousex."
-  s.description = "TODO: Description of PettyWarehousex."
+  s.authors     = ["Your name"]
+  s.email       = ["Your@email.com"]
+  s.homepage    = "http://home.com"
+  s.summary     = "Summary of PettyWarehousex."
+  s.description = "Description of PettyWarehousex."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]

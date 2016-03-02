@@ -3,15 +3,15 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
     create_table :petty_warehousex_items do |t|
       t.string :name
       t.date :in_date
-      t.decimal :in_qty, :precision => 12, :scale => 4
+      t.decimal :in_qty, :precision => 10, :scale => 4
       t.string :spec
       t.integer :last_updated_by_id
-      t.integer :stock_qty, :precision => 12, :scale => 4
+      t.integer :stock_qty, :precision => 10, :scale => 4
       t.text :note
       t.string :storage_location
       t.text :inspection
       t.timestamps
-      t.string :unit
+      t.integer :unit_id
       t.integer :supplier_id
       t.decimal :unit_price, :precision => 10, :scale => 2
       t.integer :item_category_id
@@ -19,13 +19,16 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
       t.decimal :other_cost, :precision => 10, :scale => 2
       t.integer :received_by_id
       t.string :whs_string   #warehouse name. used to allow access to each individual whs.
-      t.decimal :total_cost, :precision => 10, :scale => 2
+      t.decimal :total_cost, :precision => 12, :scale => 2
       t.integer :project_id
       t.boolean :accepted, :default => false
       t.date :accepted_date
       t.integer :purchase_order_id
       t.string :part_num
       t.string :aux_resource
+      t.string :barcode
+      t.integer :item_id
+      t.text :item_desp
       
     end
     
@@ -39,5 +42,7 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
     add_index :petty_warehousex_items, :accepted
     add_index :petty_warehousex_items, :part_num
     add_index :petty_warehousex_items, :aux_resource
+    add_index :petty_warehousex_items, :barcode
+    add_index :petty_warehousex_items, :item_id
   end
 end

@@ -1,4 +1,4 @@
-<% if @view_in_config && @erb_code %>
+<% if  @erb_code %>
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
 <% else %>
@@ -19,7 +19,7 @@
 </p>
 <p>
   <b><%= t('In Qty')  %></b>
-  <%= @item.in_qty %>/<%= @item.unit %>
+  <%= @item.in_qty %>/<%= @item.unit.name if @item.unit_id.present? %>
 </p>
 <p>
   <b><%= t('Stock Qty')  %></b>
