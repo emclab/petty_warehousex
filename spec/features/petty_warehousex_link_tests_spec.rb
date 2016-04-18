@@ -35,6 +35,7 @@ RSpec.describe "LinkTests", type: :request do
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
       
+      config_entry = FactoryGirl.create(:engine_config, :engine_name => 'rails_app', :engine_version => nil, :argument_name => 'SESSION_TIMEOUT_MINUTES', :argument_value => 30)
       ua1 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "PettyWarehousex::Item.order('created_at DESC')")
       ua1 = FactoryGirl.create(:user_access, :action => 'create', :resource => 'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
@@ -66,6 +67,7 @@ RSpec.describe "LinkTests", type: :request do
       #save_and_open_page
       expect(page).to have_content('Warehouse Items')
       click_link 'Edit'
+      #save_and_open_page
       expect(page).to have_content('Update Warehouse Item')
       fill_in 'item_name', :with => 'a new name'
       fill_in 'item_storage_location', :with => 'somewhere'

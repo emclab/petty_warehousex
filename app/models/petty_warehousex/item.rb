@@ -1,5 +1,7 @@
 module PettyWarehousex
   class Item < ActiveRecord::Base
+    default_scope {where(fort_token: Thread.current[:fort_token])}
+  
     attr_accessor :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name, :accepted_noupdate, :purchase_order_id_noupdate, 
                   :field_changed, :name_autocomplete, :item_sub_category_name
 
@@ -11,7 +13,7 @@ module PettyWarehousex
     belongs_to :project, :class_name => PettyWarehousex.project_class.to_s
     belongs_to :purchase_order, :class_name => PettyWarehousex.purchase_order_class.to_s
 
-    validates :name, :unit, :storage_location, :in_date, :whs_string, :presence => true
+    validates :name, :unit, :storage_location, :in_date, :whs_string, :fort_token, :presence => true
     validates_numericality_of :in_qty, :greater_than_or_equal_to => 0
     validates :stock_qty, :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => :in_qty}
     validates_numericality_of :project_id, :only_integer => true, :greater_than => 0, :if => 'project_id.present?'
@@ -24,7 +26,7 @@ module PettyWarehousex
     validate :dynamic_validate
     
     def dynamic_validate
-      wf = Authentify::AuthentifyUtility.find_config_const('dynamic_validate', 'petty_warehousex')
+      wf = Authentify::AuthentifyUtility.find_config_const('dynamic_validate', self.fort_token, 'petty_warehousex')
       eval(wf) if wf.present?
     end
   end

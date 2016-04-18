@@ -24,6 +24,7 @@ module PettyWarehousex
       b = FactoryGirl.create(:commonx_misc_definition, :for_which => 'warehouse', :active => true)
       
       session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids
+      session[:fort_token] = @u.fort_token
     end
     
     render_views

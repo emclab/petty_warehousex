@@ -14,15 +14,15 @@ module PettyWarehousex
       @items = @items.where(part_num: @part_num) if @part_num
       @items = @items.where(spec: @part_spec) if @part_spec
       @items = @items.page(params[:page]).per_page(@max_pagination)
-      @erb_code = find_config_const('item_index_view', 'petty_warehousex')
+      @erb_code = find_config_const('item_index_view', session[:fort_token], 'petty_warehousex')
     end
   
     def new
       @title = t('New Warehouse Item')
       @item = PettyWarehousex::Item.new()
-      @item_category = Commonx::CommonxHelper.return_misc_definitions('whs_item_category')
-      @erb_code = find_config_const('item_new_view', 'petty_warehousex')
-      @js_erb_code = find_config_const('item_new_js_view', 'petty_warehousex')
+      @item_category = return_misc_definitions('whs_item_category')
+      @erb_code = find_config_const('item_new_view', session[:fort_token], 'petty_warehousex')
+      @js_erb_code = find_config_const('item_new_js_view', session[:fort_token], 'petty_warehousex')
     end
   
     def create
@@ -37,8 +37,8 @@ module PettyWarehousex
         #@whs_string = params[:item][:whs_string]
         @project = PettyWarehousex.project_class.find_by_id(params[:item][:project_id].to_i) if params[:item][:project_id].present?
         @item_category = return_misc_definitions('whs_item_category')
-        @erb_code = find_config_const('item_new_view', 'petty_warehousex')
-        @js_erb_code = find_config_const('item_new_js_view', 'petty_warehousex')
+        @erb_code = find_config_const('item_new_view', session[:fort_token], 'petty_warehousex')
+        @js_erb_code = find_config_const('item_new_js_view', session[:fort_token], 'petty_warehousex')
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
       end
@@ -47,9 +47,9 @@ module PettyWarehousex
     def edit
       @title = t('Update Warehouse Item')
       @item = PettyWarehousex::Item.find_by_id(params[:id])
-      @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
-      @erb_code = find_config_const('item_edit_view', 'petty_warehousex')
-      @js_erb_code = find_config_const('item_edit_js_view', 'petty_warehousex')       
+      @item_category = return_misc_definitions('wh_item_category')
+      @erb_code = find_config_const('item_edit_view', session[:fort_token], 'petty_warehousex')
+      @js_erb_code = find_config_const('item_edit_js_view', session[:fort_token], 'petty_warehousex')       
     end
   
     def update
@@ -58,9 +58,9 @@ module PettyWarehousex
       if @item.update_attributes(edit_params)
         redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       else
-        @item_category = Commonx::CommonxHelper.return_misc_definitions('wh_item_category')
-        @erb_code = find_config_const('item_edit_view', 'petty_warehousex')
-        @js_erb_code = find_config_const('item_edit_js_view', 'petty_warehousex')  
+        @item_category = return_misc_definitions('wh_item_category')
+        @erb_code = find_config_const('item_edit_view', session[:fort_token], 'petty_warehousex')
+        @js_erb_code = find_config_const('item_edit_js_view', session[:fort_token], 'petty_warehousex')  
         flash[:notice] = t('Data Error. Not Updated!')
         render 'edit'
       end
@@ -69,7 +69,7 @@ module PettyWarehousex
     def show
       @title = t('Warehouse Item Info')
       @item = PettyWarehousex::Item.find_by_id(params[:id])
-      @erb_code = find_config_const('item_show_view', 'petty_warehousex')
+      @erb_code = find_config_const('item_show_view', session[:fort_token], 'petty_warehousex')
     end
     
     def autocomplete
@@ -81,7 +81,7 @@ module PettyWarehousex
     def load_record
       @whs_string = params[:whs_string].strip if params[:whs_string].present?
       @whs_string = session[:whs_string].strip if session[:whs_string].present?
-      @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
+      @qty_unit = find_config_const('piece_unit', session[:fort_token]).split(',').map(&:strip)
       @qty_unit ||= Commonx::CommonxHelper.return_misc_definitions('piece_unit').pluck('name').join(',').split(',').map(&:strip)  
       @project = PettyWarehousex.project_class.find_by_id(params[:project_id].to_i) if params[:project_id].present?
       item = PettyWarehousex::Item.find_by_id(params[:id]) if params[:id].present?

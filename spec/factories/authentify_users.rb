@@ -14,5 +14,6 @@ FactoryGirl.define do
     cell '123455'
     allow_email false
     allow_text_msg false
+    fort_token '123456789'
   end
 end
