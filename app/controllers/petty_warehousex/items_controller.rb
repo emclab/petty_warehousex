@@ -30,6 +30,7 @@ module PettyWarehousex
       @item.last_updated_by_id = session[:user_id]
       @item.received_by_id = session[:user_id]
       @item.stock_qty = params[:item][:in_qty]
+      @item.fort_token = session[:fort_token]
       @item.whs_string = session[:whs_string] if session[:whs_string]
       if @item.save
         redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
