@@ -5,3 +5,4 @@ PettyWarehousex.material_item_class = 'BaseMaterialx::Part'
 PettyWarehousex.checkout_class = 'ItemCheckoutx::Checkout' 
 PettyWarehousex.category_class = 'Commonx::MiscDefinition' #parking 
 PettyWarehousex.sub_category_class = 'Commonx::MiscDefinition' #parking
+PettyWarehousex.whs_class = 'Commonx::MiscDefinition' #parking 

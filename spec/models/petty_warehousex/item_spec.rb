@@ -22,6 +22,21 @@ module PettyWarehousex
       expect(c).not_to be_valid
     end
     
+    it "should reject 0 whs_id" do
+      c = FactoryGirl.build(:petty_warehousex_item, :whs_id => 0)
+      expect(c).not_to be_valid
+    end
+    
+    it "should take nil whs_id" do
+      c = FactoryGirl.build(:petty_warehousex_item, :whs_id => nil)
+      expect(c).to be_valid
+    end
+    
+    it "should take nil whs_string" do
+      c = FactoryGirl.build(:petty_warehousex_item, :whs_string => nil)
+      expect(c).to be_valid
+    end
+    
     it "should reject nil unit" do
       c = FactoryGirl.build(:petty_warehousex_item, :unit => nil)
       expect(c).not_to be_valid

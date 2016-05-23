@@ -9,6 +9,7 @@ module PettyWarehousex
       @title = t('Warehouse Items')
       @items = params[:petty_warehousex_items][:model_ar_r]
       @items = @items.where(whs_string: @whs_string) if @whs_string
+      @items = @items.where(whs_id: @whs_id) if @whs_id
       @items = @items.where(project_id: @project.id) if @project
       @items = @items.where(name: @part_name) if @part_name
       @items = @items.where(part_num: @part_num) if @part_num
@@ -82,6 +83,8 @@ module PettyWarehousex
     def load_record
       @whs_string = params[:whs_string].strip if params[:whs_string].present?
       @whs_string = session[:whs_string].strip if session[:whs_string].present?
+      @whs_id = params[:whs_id].to_i if params[:whs_id].present?
+      @whs_id = session[:whs_id].to_i if session[:whs_id].present?      
       @qty_unit = find_config_const('piece_unit', session[:fort_token]).split(',').map(&:strip)
       @qty_unit ||= Commonx::CommonxHelper.return_misc_definitions('piece_unit').pluck('name').join(',').split(',').map(&:strip)  
       @project = PettyWarehousex.project_class.find_by_id(params[:project_id].to_i) if params[:project_id].present?
@@ -97,7 +100,7 @@ module PettyWarehousex
     
     def new_params
       params.require(:item).permit(:in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accepted_date, :purchase_order_id, :part_num, :aux_resource)
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accepted_date, :purchase_order_id, :part_num, :aux_resource, :whs_id)
     end
     
     def edit_params
