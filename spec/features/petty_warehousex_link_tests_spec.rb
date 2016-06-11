@@ -66,6 +66,10 @@ RSpec.describe "LinkTests", type: :request do
       visit petty_warehousex.items_path
       #save_and_open_page
       expect(page).to have_content('Warehouse Items')
+      expect(Authentify::SysLog.all.count).to eq(1)
+      expect(Authentify::SysLog.all.first.resource).to eq('petty_warehousex/items')
+      expect(Authentify::SysLog.all.first.user_id).to eq(@u.id)
+      
       click_link 'Edit'
       #save_and_open_page
       expect(page).to have_content('Update Warehouse Item')
