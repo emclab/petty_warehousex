@@ -17,6 +17,7 @@ module PettyWarehousex
       @items = @items.where(spec: @part_spec) if @part_spec
       @items = @items.page(params[:page]).per_page(@max_pagination)
       @erb_code = find_config_const('item_index_view', session[:fort_token], 'petty_warehousex')
+      @js_erb_code = find_config_const('item_index_js_view', session[:fort_token], 'petty_warehousex')
     end
   
     def new
@@ -75,6 +76,12 @@ module PettyWarehousex
       @erb_code = find_config_const('item_show_view', session[:fort_token], 'petty_warehousex')
     end
     
+    def destroy
+      @item = PettyWarehousex::Item.find_by_id(params[:id])
+      PettyWarehousex::Item.delete(params[:id].to_i)
+      redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Deleted!")
+    end
+    
     def autocomplete
       @items = PettyWarehousex::Item.where("stock_qty > ?", 0).order(:name).where("name like ?", "%#{params[:term]}%")
       render json: @items.map(&:name)    
@@ -85,9 +92,11 @@ module PettyWarehousex
       @whs_string = params[:whs_string].strip if params[:whs_string].present?
       @whs_string = session[:whs_string].strip if session[:whs_string].present?
       @whs_id = params[:whs_id].to_i if params[:whs_id].present?
-      @whs_id = session[:whs_id].to_i if session[:whs_id].present?      
-      @qty_unit = find_config_const('piece_unit', session[:fort_token]).split(',').map(&:strip)
-      @qty_unit ||= Commonx::CommonxHelper.return_misc_definitions('piece_unit').pluck('name').join(',').split(',').map(&:strip)  
+      @whs_id = session[:whs_id].to_i if session[:whs_id].present? 
+      qty_u = find_config_const('piece_unit', session[:fort_token])     
+      @qty_unit = qty_u.split(',').map(&:strip) if qty_u.present? 
+      qty_c = return_misc_definitions('piece_unit')
+      @qty_unit ||= qty_c.pluck('name').join(',').split(',').map(&:strip) if qty_c.present?
       @project = PettyWarehousex.project_class.find_by_id(params[:project_id].to_i) if params[:project_id].present?
       item = PettyWarehousex::Item.find_by_id(params[:id]) if params[:id].present?
       @project = PettyWarehousex.project_class.find_by_id(item.project_id) if params[:id].present? && item.project_id.present?  #project_id optional

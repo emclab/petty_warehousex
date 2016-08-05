@@ -3,74 +3,119 @@
   
 <% else %>
 
-<h4><%=t('Warehouse Item Info') %></h4>
-
-<p>
-  <b><%= t('Item Name') %></b>
-  <%= @item.name %>
-</p>
-<p>
-  <b><%= t('Spec') %></b>
-  <%= @item.spec %>
-</p>
-<p>
-  <b><%= t('In Date') %></b>
-  <%= @item.in_date.strftime("%Y/%m/%d") if @item.in_date.present?%>
-</p>
-<p>
-  <b><%= t('In Qty')  %></b>
-  <%= @item.in_qty %>/<%= @item.unit %>
-</p>
-<p>
-  <b><%= t('Stock Qty')  %></b>
-  <%= @item.stock_qty %>/<%= @item.unit %>
-</p>
-<p>
-  <b><%= t('Total Cost($)') %></b>
-  <%= number_with_precision(@item.total_cost, :precision => 2) if @item.total_cost.present? %>
-</p>
-<p>
-  <b><%= t('Unit Price($)') %></b>
-  <%= number_with_precision(@item.unit_price, :precision => 2) if @item.unit_price.present? %>
-</p>
-<p>
-  <b><%= t('Other Cost($)') %></b>
-  <%= number_with_precision(@item.other_cost, :precision => 2) if @item.other_cost.present? %>
-</p>
-<p>
-  <b><%= t('Storage Location') %></b>
-  <%= @item.storage_location %>
-</p>
-<p>
-  <b><%= t('Inspection') %></b>
-  <%= @item.inspection %>
-</p>
-
-<p>
-  <b><%= t('Received By') %></b>
-  <%= @item.received_by.name %>
-</p>
-
-<p>
-  <b><%= t('Last Updated By') %></b>
-  <%= @item.last_updated_by.name %>
-</p>
-<p>
-  <b>LOG：</b>
-  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @item.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
-    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
-  <% end %>
-</p>
-   <table class="table table-striped">
-	  <tr>
-	    <th>
-  	  	  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
- 		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @item.id, :resource_name => params[:controller], :subaction => 'warehouse_item', :format => :js), :remote => true, 
-                          :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_warehouse_item', 'commonx/logs') %>
-        </th>
-	  </tr>
-	</table>    	
-
-
+<div class="container">
+  <div class="page-header clearfix">
+      <div class="pull-left">
+        <h2><%=@title%></h2>
+      </div>
+    </div>
+ <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+         <b><%= t('Warehouse') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+         <%= @item.whs.try('name')  %>
+    </div>
+ </div>
+ <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+         <b><%= t('Item Name') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+         <%= @item.name %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+             <b><%= t('Spec') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+           <%= @item.spec %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+         <b><%= t('In Date') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+           <%= @item.in_date.strftime("%Y/%m/%d") if @item.in_date.present? %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+          <b><%= t('In Qty') %></b>
+     </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= @item.in_qty %>/<%= @item.i_unit.name if @item.i_unit_id.present? %>
+    </div>
+ </div> 
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+          <b><%= t('Stock Qty') %></b>
+     </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= @item.stock_qty %>/<%= @item.unit %>
+    </div>
+ </div>
+ <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+          <b><%= t('Unit Price($)') %></b>
+     </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= number_with_precision(@item.unit_price, :precision => 2) if @item.unit_price.present? %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+          <b><%= t('Total Cost($)') %></b>
+     </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= number_with_precision(@item.total_cost, :precision => 2) if @item.total_cost.present? %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+          <b><%= t('Storage Location') %></b>
+     </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= @item.storage_location %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+           <b><%= t('Inspection') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+           <%= @item.inspection %>
+    </div>
+ </div>
+ <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+           <b><%= t('Note') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+           <%= @item.note %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+           <b><%= t('Received By') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+           <%= @item.received_by.name %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+            <b><%= t('Last Updated By') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= @item.last_updated_by.name %>
+    </div>
+ </div>
+   <div class="btn-toolbar">
+     <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+   </div>  
+	
+</div>
 <% end %>

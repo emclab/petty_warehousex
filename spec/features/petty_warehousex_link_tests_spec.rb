@@ -26,6 +26,7 @@ RSpec.describe "LinkTests", type: :request do
                'form-span#'         => '4'
         }
     before(:each) do
+      FactoryGirl.create(:engine_config, :engine_name => 'rails_app', :engine_version => nil, :argument_name => 'enable_info_logger', :argument_value => 'true')
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       z = FactoryGirl.create(:zone, :zone_name => 'hq')
       type = FactoryGirl.create(:group_type, :name => 'employee')
@@ -46,11 +47,14 @@ RSpec.describe "LinkTests", type: :request do
       :sql_code => "record.received_by_id == session[:user_id]")
       user_access = FactoryGirl.create(:user_access, :action => 'create_warehouse_item', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'create_warehouse', :resource => 'commonx_misc_definitions', :role_definition_id => @role.id, :rank => 1,
+      :sql_code => "")
       
       a = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'piece_unit', :argument_value => 'piece, set, kg')
       @supplier = FactoryGirl.create(:supplierx_supplier)
       b = FactoryGirl.create(:commonx_misc_definition, :for_which => 'wh_item_category', :active => true)
-      b = FactoryGirl.create(:commonx_misc_definition, :for_which => 'warehouse', :active => true)
+      @w1 = FactoryGirl.create(:commonx_misc_definition, :for_which => 'warehouse', :active => true, name: 'warehouse1')
+      @w2 = FactoryGirl.create(:commonx_misc_definition, :for_which => 'warehouse', :active => true, name: 'warehouse2')
       
       visit '/'
       #save_and_open_page
@@ -58,6 +62,18 @@ RSpec.describe "LinkTests", type: :request do
       fill_in "password", :with => @u.password
       click_button 'Login'
     end
+    
+    it "load items for the warehouse after a warehouse is selected" do
+      i1 = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id, whs_id: @w1.id, unit: 'piece', name: 'item1_')
+      i2 = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id, whs_id: @w2.id, unit: 'piece', name: 'item2_')
+      
+      visit petty_warehousex.items_path
+      expect(page).to have_content('item1_')
+      expect(page).to have_content('item2_')
+      select('warehouse2', :from => 'whs_id')
+      #need to enable test js
+    end
+    
     it "works! (now write some real specs)" do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id, whs_string: 'warehouse', unit: 'piece')

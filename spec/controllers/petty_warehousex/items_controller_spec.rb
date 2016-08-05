@@ -145,5 +145,16 @@ module PettyWarehousex
         expect(response).to be_success
       end
     end
+    
+    describe "GET 'destroy'" do
+      it "returns http success" do
+        user_access = FactoryGirl.create(:user_access, :action => 'destroy', :resource =>'petty_warehousex_items', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+        session[:user_id] = @u.id
+        q = FactoryGirl.create(:petty_warehousex_item, :supplier_id => @supplier.id, :received_by_id => @u.id)
+        get 'destroy', {:id => q.id }
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Deleted!")
+      end
+    end
   end
 end

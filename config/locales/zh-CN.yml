@@ -44,6 +44,7 @@ zh-CN:
   Unit : '单位'
   Item Category : '库存分类'
   Warehouse : '仓库'
+  Warehouses : '仓库'
   Other Cost($) : '其他费用（￥）'
   Total Cost($) : '总费用（￥）'
   Qty Pending Checkout : '申请出库数量'
@@ -54,3 +55,7 @@ zh-CN:
   Stock Qty : '库存数量'
   New Item : '新库存'
   Enter Part Name Keyword : '输入品名关键字'
+  Delete the record? : '删除？'
+  Delete  : '删除'
+  Successfully Deleted! : '已删除！'
+  
