@@ -5,6 +5,7 @@
 <% if params[:field_changed] == 'whs_id'  %>
   <% @items = @items.where(whs_id: params[:whs_id].to_i) if params[:whs_id].present? %>
   $('#index_page').html("<%= escape_javascript render partial: 'form_list', locals: {models: @items, whs_id: params[:whs_id]} %>");
+  $('#whs_id').val("<%=params[:whs_id]%>");
 <% end %>
 
 <% end %>
