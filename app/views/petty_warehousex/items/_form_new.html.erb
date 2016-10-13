@@ -21,6 +21,7 @@
   <%= f.input :supplier_id, :label => t('Supplier'), :collection => PettyWarehousex.supplier_class.where(:active => true), :include_blank => true %>
   <%= f.input :project_id, :label => t('Project#') %>
   <%= f.input :purchase_order_id, :label => t('PO#') %>
+  <%= f.input :part_id, :as => :hidden %>
   
   <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  

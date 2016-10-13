@@ -3,7 +3,7 @@ module PettyWarehousex
     default_scope {where(fort_token: Thread.current[:fort_token])}
   
     attr_accessor :supplier_name, :received_by_name, :item_category_name, :warehouse_name, :project_name, :accepted_noupdate, :purchase_order_id_noupdate, 
-                  :field_changed, :name_autocomplete, :item_sub_category_name, :whs_name, :i_unit_name
+                  :field_changed, :name_autocomplete, :item_sub_category_name, :whs_name, :i_unit_name, :part_name
 
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
     belongs_to :received_by, :class_name => 'Authentify::User'
@@ -14,6 +14,7 @@ module PettyWarehousex
     belongs_to :purchase_order, :class_name => PettyWarehousex.purchase_order_class.to_s
     belongs_to :whs, :class_name => PettyWarehousex.whs_class.to_s
     belongs_to :i_unit, :class_name => 'Commonx::MiscDefinition'
+    belongs_to :part, :class_name => PettyWarehousex.part_class.to_s
 
     validates :name, :unit, :storage_location, :in_date, :fort_token, :presence => true
     validates_numericality_of :in_qty, :greater_than_or_equal_to => 0
@@ -27,6 +28,7 @@ module PettyWarehousex
     validates_numericality_of :item_sub_category_id, :only_integer => true, :greater_than => 0, :if => 'item_sub_category_id.present?'
     validates_numericality_of :supplier_id, :only_integer => true, :greater_than => 0, :if => 'supplier_id.present?'
     validates_numericality_of :i_unit_id, :only_integer => true, :greater_than => 0, :if => 'i_unit_id.present?'
+    validates_numericality_of :part_id, :only_integer => true, :greater_than => 0, :if => 'part_id.present?'
     validate :dynamic_validate
     
     def dynamic_validate

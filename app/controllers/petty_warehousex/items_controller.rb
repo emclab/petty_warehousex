@@ -12,6 +12,7 @@ module PettyWarehousex
       @items = @items.where(whs_string: @whs_string) if @whs_string
       @items = @items.where(whs_id: @whs_id) if @whs_id
       @items = @items.where(project_id: @project.id) if @project
+      @items = @items.where(part_id: @part.id) if @part
       @items = @items.where(name: @part_name) if @part_name
       @items = @items.where(part_num: @part_num) if @part_num
       @items = @items.where(spec: @part_spec) if @part_spec
@@ -104,18 +105,20 @@ module PettyWarehousex
       @part_name = params[:part_name] if params[:part_name]
       @part_num = params[:part_num] if params[:part_num]
       @part_spec = params[:part_spec] if params[:part_spec]
+      @part = PettyWarehousex.part_class.find_by_id(params[:part_id].to_i) if params[:part_id]
     end
     
     private
     
     def new_params
       params.require(:item).permit(:in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accepted_date, :purchase_order_id, :part_num, :aux_resource, :whs_id)
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :project_id, :accepted, :accepted_date, :purchase_order_id, :part_num, :aux_resource, :whs_id,
+                    :part_id)
     end
     
     def edit_params
       params.require(:item).permit(:in_date, :in_qty, :item_category_id, :last_updated_by_id, :name, :note, :other_cost, :spec, :stock_qty, :storage_location, :supplier_id, 
-                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :accepted, :accepted_date, :purchase_order_id, :part_num)
+                    :unit, :unit_price, :inspection, :whs_string, :total_cost, :accepted, :accepted_date, :purchase_order_id, :part_num, :part_id)
     end
   end
 end

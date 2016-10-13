@@ -29,7 +29,7 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
       t.string :fort_token
       t.integer :whs_id
       t.integer :i_unit_id  #unit defined in commonx
-      
+      t.integer :part_id
     end
     
     add_index :petty_warehousex_items, :name
@@ -44,5 +44,6 @@ class CreatePettyWarehousexItems < ActiveRecord::Migration
     add_index :petty_warehousex_items, :aux_resource
     add_index :petty_warehousex_items, :fort_token
     add_index :petty_warehousex_items, :whs_id
+    add_index :petty_warehousex_items, :part_id
   end
 end
